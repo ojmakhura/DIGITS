@@ -7,9 +7,9 @@ import requests
 
 # Find the best implementation available
 try:
-    from cStringIO import StringIO
-except ImportError:
     from StringIO import StringIO
+except ImportError:
+	from io import StringIO
 
 import numpy as np
 import PIL.Image
@@ -52,20 +52,20 @@ def load_image(path):
                              allow_redirects=False,
                              timeout=HTTP_TIMEOUT)
             r.raise_for_status()
-            stream = StringIO(r.content)
+            stream = StringIO(str(r.content))
             image = PIL.Image.open(stream)
-        except requests.exceptions.RequestException as e:
-            raise errors.LoadImageError, e.message
+        #except requests.exceptions.RequestException as e:
+        #    raise errors.LoadImageError( e.message)
         except IOError as e:
-            raise errors.LoadImageError, e.message
+            raise errors.LoadImageError(e)
     elif os.path.exists(path):
         try:
             image = PIL.Image.open(path)
             image.load()
         except IOError as e:
-            raise errors.LoadImageError, 'IOError: Trying to load "%s": %s' % (path, e.message)
+            raise errors.LoadImageError( 'IOError: Trying to load "%s": %s' % (path, e))
     else:
-        raise errors.LoadImageError, '"%s" not found' % path
+        raise errors.LoadImageError('"%s" not found' % path)
 
     if image.mode in ['L', 'RGB']:
         # No conversion necessary
@@ -87,7 +87,7 @@ def load_image(path):
         new.paste(image, mask=image.convert('RGBA'))
         return new
     else:
-        raise errors.LoadImageError, 'Image mode "%s" not supported' % image.mode
+        raise errors.LoadImageError( 'Image mode "%s" not supported' % image.mode)
 
 
 def upscale(image, ratio):
@@ -274,14 +274,14 @@ def resize_image(image, height, width,
 
         # fill ends of dimension that is too short with random noise
         if width_ratio > height_ratio:
-            padding = (height - resize_height) / 2
+            padding = int(round((height - resize_height) / 2))
             noise_size = (padding, width)
             if channels > 1:
                 noise_size += (channels,)
             noise = np.random.randint(0, 255, noise_size).astype('uint8')
             image = np.concatenate((noise, image, noise), axis=0)
         else:
-            padding = (width - resize_width) / 2
+            padding = int(round((width - resize_width) / 2))
             noise_size = (height, padding)
             if channels > 1:
                 noise_size += (channels,)
@@ -511,7 +511,7 @@ def get_color_map(name):
         bluemap = [1, 0.5]
     else:
         if name != 'jet':
-            print 'Warning: colormap "%s" not supported. Using jet instead.' % name
+            print ('Warning: colormap "%s" not supported. Using jet instead.' % name)
         redmap = [0, 0, 0, 0, 0.5, 1, 1, 1, 0.5]
         greenmap = [0, 0, 0.5, 1, 1, 1, 0.5, 0, 0]
         bluemap = [0.5, 1, 1, 1, 0.5, 0, 0, 0, 0]

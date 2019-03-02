@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # Copyright (c) 2016-2017, NVIDIA CORPORATION.  All rights reserved.
 """
 Downloads BVLC Alexnet and perform the require net surgery to convert into an FCN Alexnet

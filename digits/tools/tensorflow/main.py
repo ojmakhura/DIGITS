@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # Copyright (c) 2016, NVIDIA CORPORATION.  All rights reserved.
 #
 # This document should comply with PEP-8 Style Guide

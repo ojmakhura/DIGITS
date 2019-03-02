@@ -1,18 +1,18 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # Copyright (c) 2016-2017, NVIDIA CORPORATION.  All rights reserved.
 
 import argparse
 # Find the best implementation available
 try:
-    from cStringIO import StringIO
-except ImportError:
     from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 import lmdb
 import logging
 import numpy as np
 import os
 import PIL.Image
-import Queue
+import queue
 import sys
 import threading
 
@@ -36,7 +36,7 @@ class DbWriter(threading.Thread):
 
     def __init__(self, output_dir, total_batches):
         self._dir = output_dir
-        self.write_queue = Queue.Queue(10)
+        self.write_queue = queue.Queue(10)
         # sequence number
         self.seqn = 0
         self.total_batches = total_batches

@@ -7,10 +7,7 @@ import shutil
 import tempfile
 
 # Find the best implementation available
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from StringIO import StringIO
+from io import StringIO
 
 from bs4 import BeautifulSoup
 import PIL.Image
@@ -128,7 +125,7 @@ class BaseViewsTestWithImageset(BaseViewsTest):
 
         if request_json:
             if rv.status_code != 200:
-                print json.loads(rv.data)
+                print (json.loads(rv.data))
                 raise RuntimeError('Model creation failed with %s' % rv.status_code)
             return json.loads(rv.data)['id']
 
@@ -137,9 +134,9 @@ class BaseViewsTestWithImageset(BaseViewsTest):
             s = BeautifulSoup(rv.data, 'html.parser')
             div = s.select('div.alert-danger')
             if div:
-                print div[0]
+                print (div[0])
             else:
-                print rv.data
+                print (rv.data)
             raise RuntimeError('Failed to create dataset - status %s' % rv.status_code)
 
         job_id = cls.job_id_from_response(rv)

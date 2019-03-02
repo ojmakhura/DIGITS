@@ -11,9 +11,9 @@ import time
 
 # Find the best implementation available
 try:
-    from cStringIO import StringIO
-except ImportError:
     from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 import lmdb
 import numpy as np
@@ -123,8 +123,8 @@ def analyze_db(database,
 
         if print_data:
             array = caffe.io.datum_to_array(datum)
-            print '>>> Datum #%d (shape=%s)' % (count, array.shape)
-            print array
+            print ('>>> Datum #%d (shape=%s)' % (count, array.shape))
+            print (array)
 
         if (not datum.HasField('height') or datum.height == 0 or
                 not datum.HasField('width') or datum.width == 0):

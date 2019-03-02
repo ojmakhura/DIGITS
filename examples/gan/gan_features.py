@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # Copyright (c) 2017, NVIDIA CORPORATION.  All rights reserved.
 
 import argparse
@@ -63,7 +63,7 @@ def save_attributes(attributes):
     Save attribute vectors
     """
     zs = np.zeros(attributes['positive_attribute_z'].shape)
-    for i in xrange(attributes['n_attributes']):
+    for i in range(attributes['n_attributes']):
         zs[i] = attributes['positive_attribute_z'][i] / attributes['positive_count'][i] \
             - attributes['negative_attribute_z'][i] / attributes['negative_count'][i]
     output = open('attributes_z.pkl', 'wb')

@@ -334,7 +334,7 @@ class ModelForm(Form):
         ) for index in config_value('gpu_list').split(',') if index],
         default='next',
     )
-
+    
     # Select N of several GPUs
     select_gpus = utils.forms.SelectMultipleField(
         'Select which GPU[s] you would like to use',
@@ -342,7 +342,7 @@ class ModelForm(Form):
             index,
             '#%s - %s (%s memory)' % (
                 index,
-                get_device(index).name,
+                get_device(int(index)).name,
                 sizeof_fmt(
                     get_nvml_info(index)['memory']['total']
                     if get_nvml_info(index) and 'memory' in get_nvml_info(index)

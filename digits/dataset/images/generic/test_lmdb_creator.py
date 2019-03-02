@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # Copyright (c) 2015-2017, NVIDIA CORPORATION.  All rights reserved.
 """
 Functions for creating temporary LMDBs
@@ -13,9 +13,9 @@ import time
 
 # Find the best implementation available
 try:
-    from cStringIO import StringIO
-except ImportError:
     from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 import lmdb
 import numpy as np
@@ -193,12 +193,12 @@ if __name__ == '__main__':
     args = vars(parser.parse_args())
 
     if os.path.exists(args['folder']):
-        print 'ERROR: Folder already exists'
+        print ('ERROR: Folder already exists')
         sys.exit(1)
     else:
         os.makedirs(args['folder'])
 
-    print 'Creating images at "%s" ...' % args['folder']
+    print ('Creating images at "%s" ...' % args['folder'])
 
     start_time = time.time()
 
@@ -208,4 +208,4 @@ if __name__ == '__main__':
                  image_count=args['image_count'],
                  )
 
-    print 'Done after %s seconds' % (time.time() - start_time,)
+    print ('Done after %s seconds' % (time.time() - start_time,))

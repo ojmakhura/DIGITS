@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # Copyright (c) 2016-2017, NVIDIA CORPORATION.  All rights reserved.
 """
 Functions for creating a dummy image segmentation dataset
@@ -106,4 +106,4 @@ if __name__ == '__main__':
 
     create_images(args['output'], args['image_count'], args['image_size'], args['grid_size'])
 
-    print 'Done after %s seconds' % (time.time() - start_time,)
+    print ('Done after %s seconds' % (time.time() - start_time,))

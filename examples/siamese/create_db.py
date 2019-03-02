@@ -73,13 +73,13 @@ def create_lmdbs(folder, file_list, image_count=None, db_batch_size=None):
             ground_truth = int(match.group(2))
             images.append([path, ground_truth])
 
-    print "Found %d image paths in image list" % len(images)
+    print ("Found %d image paths in image list" % len(images))
 
     for phase, image_count in [
             ('train', train_image_count),
             ('val', val_image_count)]:
 
-        print "Will create %d pairs of %s images" % (image_count, phase)
+        print ("Will create %d pairs of %s images" % (image_count, phase))
 
         # create DBs
         image_db = lmdb.open(os.path.join(folder, '%s_images' % phase),
@@ -240,7 +240,7 @@ if __name__ == '__main__':
     else:
         os.makedirs(args['folder'])
 
-    print 'Creating images at "%s" ...' % args['folder']
+    print ('Creating images at "%s" ...' % args['folder'])
 
     start_time = time.time()
 
@@ -250,4 +250,4 @@ if __name__ == '__main__':
         image_count=args['image_count'],
     )
 
-    print 'Done after %s seconds' % (time.time() - start_time,)
+    print ('Done after %s seconds' % (time.time() - start_time,))

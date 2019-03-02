@@ -95,9 +95,9 @@ class BaseViewsTestWithDataset(BaseViewsTest):
             s = BeautifulSoup(rv.data, 'html.parser')
             div = s.select('div.alert-danger')
             if div:
-                print div[0]
+                print (div[0])
             else:
-                print rv.data
+                print (rv.data)
             raise RuntimeError(
                 'Failed to create dataset - status %s' % rv.status_code)
 
@@ -207,7 +207,7 @@ class GenericViewsTest(BaseViewsTest):
 
     def test_page_dataset_new(self):
         rv = self.app.get('/datasets/generic/new/%s' % self.EXTENSION_ID)
-        print rv.data
+        print (rv.data)
         assert rv.status_code == 200, 'page load failed with %s' % rv.status_code
         assert extensions.data.get_extension(self.EXTENSION_ID).get_title() in rv.data, 'unexpected page format'
 

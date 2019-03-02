@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # Copyright (c) 2015-2017, NVIDIA CORPORATION.  All rights reserved.
 
 """
@@ -94,4 +94,4 @@ if __name__ == '__main__':
                           use_gpu=(not args['nogpu']),
                           )
 
-    print 'Script took %f seconds.' % (time.time() - script_start_time,)
+    print ('Script took %f seconds.' % (time.time() - script_start_time,))

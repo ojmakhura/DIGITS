@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # Copyright (c) 2015-2017, NVIDIA CORPORATION.  All rights reserved.
 
 """
@@ -223,10 +223,10 @@ def classify(caffemodel, deploy_file, image_files,
         classifications.append(result)
 
     for index, classification in enumerate(classifications):
-        print '{:-^80}'.format(' Prediction for %s ' % image_files[index])
+        print ('{:-^80}'.format(' Prediction for %s ' % image_files[index]))
         for label, confidence in classification:
-            print '{:9.4%} - "{}"'.format(confidence / 100.0, label)
-        print
+            print ('{:9.4%} - "{}"'.format(confidence / 100.0, label))
+        print()
 
 
 if __name__ == '__main__':
@@ -257,4 +257,4 @@ if __name__ == '__main__':
         not args['nogpu'],
     )
 
-    print 'Script took %f seconds.' % (time.time() - script_start_time,)
+    print ('Script took %f seconds.' % (time.time() - script_start_time,))

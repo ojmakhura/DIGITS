@@ -13,10 +13,7 @@ import math
 
 
 # Find the best implementation available
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from StringIO import StringIO
+from io import StringIO
 
 from bs4 import BeautifulSoup
 
@@ -262,7 +259,7 @@ class BaseViewsTestWithDataset(BaseViewsTest,
 
         if request_json:
             if rv.status_code != 200:
-                print json.loads(rv.data)
+                print (json.loads(rv.data))
                 raise RuntimeError('Model creation failed with %s' % rv.status_code)
             data = json.loads(rv.data)
             if 'jobs' in data.keys():
@@ -272,13 +269,13 @@ class BaseViewsTestWithDataset(BaseViewsTest,
 
         # expect a redirect
         if not 300 <= rv.status_code <= 310:
-            print 'Status code:', rv.status_code
+            print ('Status code:', rv.status_code)
             s = BeautifulSoup(rv.data, 'html.parser')
             div = s.select('div.alert-danger')
             if div:
-                print div[0]
+                print (div[0])
             else:
-                print rv.data
+                print (rv.data)
             raise RuntimeError('Failed to create dataset - status %s' % rv.status_code)
 
         job_id = cls.job_id_from_response(rv)

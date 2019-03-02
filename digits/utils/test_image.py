@@ -5,10 +5,7 @@ import os
 import tempfile
 
 # Find the best implementation available
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from StringIO import StringIO
+from io import StringIO
 
 import mock
 from nose.tools import assert_raises
@@ -105,7 +102,7 @@ class TestLoadImage():
 
         # Save image to a JPEG buffer.
         buffer_io = StringIO()
-        image.save(buffer_io, format='jpeg')
+        image.save(buffer_io.getvalue(), format='jpeg')
         encoded = buffer_io.getvalue()
         buffer_io.close()
 

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # Copyright (c) 2014-2017, NVIDIA CORPORATION.  All rights reserved.
 
 import argparse
@@ -6,7 +6,7 @@ from collections import Counter
 import logging
 import math
 import os
-import Queue
+import queue
 import random
 import re
 import shutil
@@ -16,9 +16,9 @@ import time
 
 # Find the best implementation available
 try:
-    from cStringIO import StringIO
-except ImportError:
     from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 import h5py
 import lmdb
@@ -270,7 +270,7 @@ def create_db(input_file, output_dir,
 
     # Load lines from input_file into a load_queue
 
-    load_queue = Queue.Queue()
+    load_queue = queue.Queue()
     image_count = _fill_load_queue(input_file, load_queue, shuffle)
 
     # Start some load threads
@@ -279,8 +279,8 @@ def create_db(input_file, output_dir,
                                        bool(backend == 'hdf5'), kwargs.get('hdf5_dset_limit'),
                                        image_channels, image_height, image_width)
     num_threads = _calculate_num_threads(batch_size, shuffle)
-    write_queue = Queue.Queue(2 * batch_size)
-    summary_queue = Queue.Queue()
+    write_queue = queue.Queue(2 * batch_size)
+    summary_queue = queue.Queue()
 
     for _ in xrange(num_threads):
         p = threading.Thread(target=_load_thread,
@@ -676,7 +676,7 @@ def _load_thread(load_queue, write_queue, summary_queue,
     while not load_queue.empty():
         try:
             path, label = load_queue.get(True, 0.05)
-        except Queue.Empty:
+        except queue.Empty:
             continue
 
         # prepend path with image_folder, if appropriate

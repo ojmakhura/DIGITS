@@ -41,7 +41,7 @@ server {
 
     # Static files
     location /static {
-        alias /usr/lib/python2.7/dist-packages/digits/static;
+        alias /usr/lib/python3.7/dist-packages/digits/static;
     }
     location /files {
         alias /var/lib/digits/jobs; #AUTOCONFIG jobs_dir (DO NOT DELETE THIS LINE)

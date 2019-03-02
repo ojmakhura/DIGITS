@@ -2,7 +2,10 @@
 from __future__ import absolute_import
 
 import os
-from urlparse import urlparse
+try:
+    import urlparse
+except ImportError:
+    from urllib.parse import urlparse
 
 from . import option_list
 
