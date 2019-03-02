@@ -11,7 +11,7 @@ import time
 
 # Find the best implementation available
 try:
-    from StringIO import StringIO
+    from io import StringIO
 except ImportError:
     from io import StringIO
 
@@ -123,13 +123,13 @@ def analyze_db(database,
 
         if print_data:
             array = caffe.io.datum_to_array(datum)
-            print ('>>> Datum #%d (shape=%s)' % (count, array.shape))
+            print(('>>> Datum #%d (shape=%s)' % (count, array.shape)))
             print (array)
 
         if (not datum.HasField('height') or datum.height == 0 or
                 not datum.HasField('width') or datum.width == 0):
             if datum.encoded:
-                if force_same_shape or not len(unique_shapes.keys()):
+                if force_same_shape or not len(list(unique_shapes.keys())):
                     # Decode datum to learn the shape
                     s = StringIO()
                     s.write(datum.data)
@@ -153,7 +153,7 @@ def analyze_db(database,
 
         unique_shapes[shape] += 1
 
-        if force_same_shape and len(unique_shapes.keys()) > 1:
+        if force_same_shape and len(list(unique_shapes.keys())) > 1:
             logger.error("Images with different shapes found: %s and %s" % tuple(unique_shapes.keys()))
             return False
 
@@ -169,13 +169,13 @@ def analyze_db(database,
             # quit after reading one
             count = reader.total_entries
             logger.info('Assuming all entries have same shape ...')
-            unique_shapes[unique_shapes.keys()[0]] = count
+            unique_shapes[list(unique_shapes.keys())[0]] = count
             break
 
     if count != reader.total_entries:
         logger.warning('LMDB reported %s total entries, but only read %s' % (reader.total_entries, count))
 
-    for key, val in sorted(unique_shapes.items(), key=operator.itemgetter(1), reverse=True):
+    for key, val in sorted(list(unique_shapes.items()), key=operator.itemgetter(1), reverse=True):
         logger.info('%s entries found with shape %s (WxHxC)' % (val, key))
 
     logger.info('Completed in %s seconds.' % (time.time() - start_time,))

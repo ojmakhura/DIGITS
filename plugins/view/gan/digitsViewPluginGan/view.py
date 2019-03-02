@@ -1,13 +1,13 @@
 # Copyright (c) 2016, NVIDIA CORPORATION.  All rights reserved.
-from __future__ import absolute_import
+
 
 import os
 
 # Find the best implementation available
 try:
-    from cStringIO import StringIO
+    from io import StringIO
 except ImportError:
-    from StringIO import StringIO
+    from io import StringIO
 import pickle
 
 import imageio
@@ -91,8 +91,8 @@ class Visualization(VisualizationInterface):
             os.path.join(extension_dir, HEADER_TEMPLATE), "r").read()
 
         context = {'task_id': self.task_id,
-                   'cols': range(self.grid_size),
-                   'rows': range(self.grid_size),
+                   'cols': list(range(self.grid_size)),
+                   'rows': list(range(self.grid_size)),
                    'animated_image': None}
 
         if hasattr(self, 'animated_images'):
@@ -167,7 +167,7 @@ class Visualization(VisualizationInterface):
         """
         Process one inference and return data to visualize
         """
-        data = output_data[output_data.keys()[0]].astype('float32')
+        data = output_data[list(output_data.keys())[0]].astype('float32')
 
         if self.task_id == 'grid':
             col_id = int(input_id) // self.grid_size
@@ -184,7 +184,7 @@ class Visualization(VisualizationInterface):
                 # CelebA
                 if not hasattr(self, 'animated_images'):
                     self.animated_images = [None] * (4 * self.grid_size - 4)
-                print("animated: %s" % repr(self.animated_images))
+                print(("animated: %s" % repr(self.animated_images)))
 
                 if (col_id == 0 or row_id == 0 or col_id == (self.grid_size - 1) or row_id == (self.grid_size - 1)):
                     if row_id == 0:
@@ -196,7 +196,7 @@ class Visualization(VisualizationInterface):
                     else:
                         idx = 4 * self.grid_size - 4 - row_id
                     self.animated_images[idx] = data.astype('uint8')
-                    print("set idx %d " % idx)
+                    print(("set idx %d " % idx))
             else:
                 raise ValueError("Unhandled image size: %d" % img_size)
 

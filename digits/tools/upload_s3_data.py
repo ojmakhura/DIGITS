@@ -3,10 +3,10 @@
 
 import sys
 import os
-import ConfigParser
-from s3_walker import S3Walker
+import configparser
+from .s3_walker import S3Walker
 
-config = ConfigParser.RawConfigParser()
+config = configparser.RawConfigParser()
 config.read('upload_config.cfg')
 endpoint = config.get('S3 Config', 'endpoint')
 accesskey = config.get('S3 Config', 'accesskey')
@@ -46,4 +46,4 @@ for digit in digits:
         file = os.path.join(digit_folder, f)
         key = path_prefix + file[file.index('train'):]
         walker.put(bucket_name, key, file)
-        print('uploaded ' + file + ' ==> ' + key)
+        print(('uploaded ' + file + ' ==> ' + key))

@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2017, NVIDIA CORPORATION.  All rights reserved.
-from __future__ import absolute_import
+
 
 import numpy as np
 import os
@@ -99,7 +99,7 @@ class Visualization(VisualizationInterface):
         """
         # assume only one output and grayscale input
 
-        output_vector = output_data[output_data.keys()[0]]
+        output_vector = output_data[list(output_data.keys())[0]]
         grad = np.array([
             output_vector[0] * self.width,
             output_vector[1] * self.height])

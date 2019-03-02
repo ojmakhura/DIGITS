@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2017, NVIDIA CORPORATION.  All rights reserved.
-from __future__ import absolute_import
+
 
 import os
 
@@ -27,7 +27,7 @@ class DatasetForm(Form):
                 return True
 
     image_folder = utils.forms.StringField(
-        u'Image folder',
+        'Image folder',
         validators=[
             validators.DataRequired(),
             validate_folder_path,
@@ -36,7 +36,7 @@ class DatasetForm(Form):
     )
 
     contour_folder = utils.forms.StringField(
-        u'Contour folder',
+        'Contour folder',
         validators=[
             validators.DataRequired(),
             validate_folder_path,
@@ -55,7 +55,7 @@ class DatasetForm(Form):
     )
 
     folder_pct_val = utils.forms.IntegerField(
-        u'% for validation',
+        '% for validation',
         default=10,
         validators=[
             validators.NumberRange(min=0, max=100)
@@ -82,7 +82,7 @@ class InferenceForm(Form):
     A form used to perform inference on a text classification dataset
     """
     test_image_file = utils.forms.StringField(
-        u'Image file',
+        'Image file',
         validators=[
             validate_file_path,
         ],

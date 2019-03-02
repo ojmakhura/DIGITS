@@ -16,7 +16,7 @@ def extract_data(input_dir, output_dir):
     Extract zipfiles at input_dir into output_dir
     """
     if os.path.isdir(output_dir):
-        print ('  Using extracted data at %s.' % output_dir)
+        print(('  Using extracted data at %s.' % output_dir))
         return
 
     for filename in (
@@ -25,7 +25,7 @@ def extract_data(input_dir, output_dir):
             'devkit_object.zip'):
         filename = os.path.join(input_dir, filename)
         zf = zipfile.ZipFile(filename, 'r')
-        print ('Unzipping %s ...' % filename)
+        print(('Unzipping %s ...' % filename))
         zf.extractall(output_dir)
 
 

@@ -13,9 +13,9 @@ See the self-documenting flags below.
 
 """
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+
+
+
 
 import threading
 import time
@@ -210,8 +210,8 @@ def average_head_keys(tags, vals):
         else:
             sums[a] += b
             nums[a] += 1
-    tags_clean = sums.keys()
-    return tags_clean, np.asarray(sums.values())/np.asarray(nums.values())
+    tags_clean = list(sums.keys())
+    return tags_clean, np.asarray(list(sums.values()))/np.asarray(list(nums.values()))
 
 
 def summary_to_lists(summary_str):
@@ -274,7 +274,7 @@ def load_snapshot(sess, weight_path, var_candidates):
     # Only obtain all the variables that are [in the current graph] AND [in the checkpoint]
     vars_restore = []
     for vt in var_candidates:
-        for vm in var_map.keys():
+        for vm in list(var_map.keys()):
             if vt.name.split(':')[0] == vm:
                 if ("global_step" not in vt.name) and not (vt.name.startswith("train/")):
                     vars_restore.append(vt)
@@ -446,7 +446,7 @@ def input_generator(zs_file, batch_size):
     indices_init = (indices * batch_size + epoch) % img_count
     indices_final = (indices_init + 1) % img_count
 
-    for i in xrange(batch_size):
+    for i in range(batch_size):
         z_init = zs[indices_init[i]]
         z_final = zs[indices_final[i]]
 

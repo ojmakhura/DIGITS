@@ -1,5 +1,5 @@
 # Copyright (c) 2016, NVIDIA CORPORATION.  All rights reserved.
-from __future__ import absolute_import
+
 
 import os
 
@@ -27,7 +27,7 @@ class DatasetForm(Form):
                 return True
 
     story_folder = utils.forms.StringField(
-        u'Story folder',
+        'Story folder',
         validators=[
             validators.DataRequired(),
             validate_folder_path,
@@ -67,7 +67,7 @@ class DatasetForm(Form):
         )
 
     pct_val = utils.forms.IntegerField(
-        u'% for validation',
+        '% for validation',
         default=10,
         validators=[
             validators.NumberRange(min=0, max=100)
@@ -94,6 +94,6 @@ class InferenceForm(Form):
     A form used to perform inference on a text classification dataset
     """
     snippet = utils.forms.TextAreaField(
-        u'Story/Question',
+        'Story/Question',
         tooltip="Write all sentences there and end with a question"
     )

@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2017, NVIDIA CORPORATION.  All rights reserved.
-from __future__ import absolute_import
+
 
 import os
 
@@ -104,7 +104,7 @@ class Visualization(VisualizationInterface):
         input_string = ''.join(input_characters)
 
         # assume the only output is from a probability distribution
-        scores = output_data[output_data.keys()[0]].astype('float32')
+        scores = output_data[list(output_data.keys())[0]].astype('float32')
 
         if np.max(scores) < 0:
             # terminal layer is a logsoftmax

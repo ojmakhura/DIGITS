@@ -1,5 +1,5 @@
 # Copyright (c) 2014-2017, NVIDIA CORPORATION.  All rights reserved.
-from __future__ import absolute_import
+
 
 from flask_wtf import Form
 from wtforms.validators import DataRequired
@@ -13,7 +13,7 @@ class DatasetForm(Form):
     (abstract class)
     """
 
-    dataset_name = utils.forms.StringField(u'Dataset Name',
+    dataset_name = utils.forms.StringField('Dataset Name',
                                            validators=[DataRequired()]
                                            )
 

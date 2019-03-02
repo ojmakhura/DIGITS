@@ -9,7 +9,7 @@ import requests
 import re
 import sys
 import time
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 # Add path for DIGITS package
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))

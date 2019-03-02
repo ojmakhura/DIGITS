@@ -120,7 +120,7 @@ class DrawWindow(BufferedWindow):
         dc.Clear()  # make sure you clear the bitmap!
 
         # Here's the actual drawing code.
-        for key, data in self.DrawData.items():
+        for key, data in list(self.DrawData.items()):
             if key == "text":
                 dc.DrawText(data, 0, 0)
             elif key == "np":
@@ -139,7 +139,7 @@ class DrawWindow(BufferedWindow):
 
                 image = wx.EmptyImage(width, height)
 
-                for i in xrange(img_count):
+                for i in range(img_count):
                     x = width * (i // grid_size)
                     y = height * (i % grid_size)
                     s = data[i].tostring()
@@ -206,7 +206,7 @@ class TestFrame(wx.Frame):
         hbox.Add(vbox, 0, wx.ALIGN_RIGHT)
         panel.SetSizer(hbox)
 
-        self.Window.DrawData = {'text': u'Initialising...'}
+        self.Window.DrawData = {'text': 'Initialising...'}
         self.Window.UpdateDrawing()
 
         # to measure frames per second

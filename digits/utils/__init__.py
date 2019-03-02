@@ -1,5 +1,5 @@
 # Copyright (c) 2014-2017, NVIDIA CORPORATION.  All rights reserved.
-from __future__ import absolute_import
+
 
 import inspect
 from io import BlockingIOError
@@ -12,7 +12,7 @@ from random import uniform
 try:
     from urllib.parse import urlparse
 except ImportError:
-     from urlparse import urlparse
+     from urllib.parse import urlparse
 
 if not platform.system() == 'Windows':
     import fcntl
@@ -86,7 +86,7 @@ def subclass(cls):
     Verify all @override methods
     Use a class decorator to find the method's class
     """
-    for name, method in cls.__dict__.items():
+    for name, method in list(cls.__dict__.items()):
         if hasattr(method, 'override'):
             found = False
             for base_class in inspect.getmro(cls)[1:]:

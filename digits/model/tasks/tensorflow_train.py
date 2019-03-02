@@ -1,5 +1,5 @@
 # Copyright (c) 2016, NVIDIA CORPORATION.  All rights reserved.
-from __future__ import absolute_import
+
 
 import operator
 import os
@@ -18,6 +18,7 @@ import digits
 from digits import utils
 from digits.utils import subclass, override, constants
 import tensorflow as tf
+from functools import reduce
 
 # NOTE: Increment this everytime the pickled object changes
 PICKLE_VERSION = 1
@@ -654,7 +655,7 @@ class TensorflowTrainTask(TrainTask):
             #    |  |- activations
             #    |  |- weights
             #    |- 2
-            for layer_id, layer in vis_db['layers'].items():
+            for layer_id, layer in list(vis_db['layers'].items()):
                 op_name = layer.attrs['op']
                 var_name = layer.attrs['var']
                 layer_desc = "%s\n%s" % (op_name, var_name)
@@ -732,7 +733,7 @@ class TensorflowTrainTask(TrainTask):
         y, x = np.histogram(data, bins=20)
         y = list(y)
         ticks = x[[0, len(x)/2, -1]]
-        x = [(x[i]+x[i+1])/2.0 for i in xrange(len(x)-1)]
+        x = [(x[i]+x[i+1])/2.0 for i in range(len(x)-1)]
         ticks = list(ticks)
         return (mean, std, [y, x, ticks])
 

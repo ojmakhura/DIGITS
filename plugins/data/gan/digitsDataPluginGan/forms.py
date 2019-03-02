@@ -1,5 +1,5 @@
 # Copyright (c) 2016, NVIDIA CORPORATION.  All rights reserved.
-from __future__ import absolute_import
+
 
 import os
 
@@ -39,7 +39,7 @@ class DatasetForm(Form):
                 return True
 
     file_list = utils.forms.StringField(
-        u'File list (with attributes) in CelebA format',
+        'File list (with attributes) in CelebA format',
         validators=[
             validate_file_path,
         ],
@@ -47,7 +47,7 @@ class DatasetForm(Form):
     )
 
     image_folder = utils.forms.StringField(
-        u'Image folder',
+        'Image folder',
         validators=[
             validators.DataRequired(),
             validate_folder_path,
@@ -56,7 +56,7 @@ class DatasetForm(Form):
         )
 
     center_crop_size = utils.forms.IntegerField(
-        u'Center crop size',
+        'Center crop size',
         default=108,
         validators=[
             validators.NumberRange(min=0)
@@ -65,7 +65,7 @@ class DatasetForm(Form):
     )
 
     resize = utils.forms.IntegerField(
-        u'Resize after crop',
+        'Resize after crop',
         default=64,
         tooltip="Resize after crop."
     )
@@ -105,7 +105,7 @@ class InferenceForm(Form):
                 return True
 
     row_count = utils.forms.IntegerField(
-        u'Rows',
+        'Rows',
         default=10,
         validators=[
             validators.NumberRange(min=1)
@@ -139,23 +139,23 @@ class InferenceForm(Form):
         )
 
     class_z_vector = utils.forms.StringField(
-        u'Z vector (leave blank for random)',
+        'Z vector (leave blank for random)',
     )
 
     style_z1_vector = utils.forms.StringField(
-        u'Z1 vector (leave blank for random)',
+        'Z1 vector (leave blank for random)',
     )
 
     style_z2_vector = utils.forms.StringField(
-        u'Z2 vector (leave blank for random)',
+        'Z2 vector (leave blank for random)',
     )
 
     genimg_z_vector = utils.forms.StringField(
-        u'Z vector (leave blank for random)',
+        'Z vector (leave blank for random)',
     )
 
     genimg_class_id = utils.forms.IntegerField(
-        u'Class ID',
+        'Class ID',
         default=0,
         validators=[
             validators.NumberRange(min=0, max=9)
@@ -164,11 +164,11 @@ class InferenceForm(Form):
     )
 
     attributes_z_vector = utils.forms.StringField(
-        u'Z vector (leave blank for random)',
+        'Z vector (leave blank for random)',
     )
 
     attributes_file = utils.forms.StringField(
-        u'Attributes vector file',
+        'Attributes vector file',
         validators=[
             validate_file_path,
             ],
@@ -178,7 +178,7 @@ class InferenceForm(Form):
     attributes_params = HiddenField()
 
     enc_file_list = utils.forms.StringField(
-        u'File list',
+        'File list',
         validators=[
             validate_file_path,
             ],
@@ -186,7 +186,7 @@ class InferenceForm(Form):
         )
 
     enc_image_folder = utils.forms.StringField(
-        u'Image folder',
+        'Image folder',
         validators=[
             validate_folder_path,
             ],
@@ -194,7 +194,7 @@ class InferenceForm(Form):
         )
 
     enc_num_images = utils.forms.IntegerField(
-        u'Number of images to encode',
+        'Number of images to encode',
         default=100,
         validators=[
             validators.NumberRange(min=0)
@@ -203,19 +203,19 @@ class InferenceForm(Form):
     )
 
     attributes_z1_vector = utils.forms.StringField(
-        u'Source Z vector (leave blank for random)',
+        'Source Z vector (leave blank for random)',
     )
 
     attributes_z2_vector = utils.forms.StringField(
-        u'First Sink Z vector (leave blank for random)',
+        'First Sink Z vector (leave blank for random)',
     )
 
     attributes_z3_vector = utils.forms.StringField(
-        u'Second Sink Z vector (leave blank for random)',
+        'Second Sink Z vector (leave blank for random)',
     )
 
     animation_num_transitions = utils.forms.IntegerField(
-        u'Number of transitions per image',
+        'Number of transitions per image',
         default=10,
         validators=[
             validators.NumberRange(min=1, max=100)
@@ -224,5 +224,5 @@ class InferenceForm(Form):
     )
 
     animation_z_vectors = TextAreaField(
-        u'z vectors (one per line)',
+        'z vectors (one per line)',
     )

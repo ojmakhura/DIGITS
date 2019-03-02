@@ -1,5 +1,5 @@
 # Copyright (c) 2014-2017, NVIDIA CORPORATION.  All rights reserved.
-from __future__ import absolute_import
+
 
 import operator
 import os
@@ -21,6 +21,7 @@ from digits.utils import subclass, override, constants
 
 # Must import after importing digit.config
 import caffe_pb2
+from functools import reduce
 
 # NOTE: Increment this every time the pickled object changes
 PICKLE_VERSION = 1
@@ -677,7 +678,7 @@ class TorchTrainTask(TrainTask):
             #    |  |- activations
             #    |  |- weights
             #    |- 2
-            for layer_id, layer in vis_db['layers'].items():
+            for layer_id, layer in list(vis_db['layers'].items()):
                 layer_desc = layer['name'][...].tostring()
                 if 'Sequential' in layer_desc or 'Parallel' in layer_desc:
                     # ignore containers
@@ -753,7 +754,7 @@ class TorchTrainTask(TrainTask):
         y, x = np.histogram(data, bins=20)
         y = list(y)
         ticks = x[[0, len(x) / 2, -1]]
-        x = [(x[i] + x[i + 1]) / 2.0 for i in xrange(len(x) - 1)]
+        x = [(x[i] + x[i + 1]) / 2.0 for i in range(len(x) - 1)]
         ticks = list(ticks)
         return (mean, std, [y, x, ticks])
 

@@ -1,5 +1,5 @@
 # Copyright (c) 2014-2017, NVIDIA CORPORATION.  All rights reserved.
-from __future__ import absolute_import
+
 
 import math
 import os.path
@@ -7,7 +7,7 @@ import requests
 
 # Find the best implementation available
 try:
-    from StringIO import StringIO
+    from io import StringIO
 except ImportError:
 	from io import StringIO
 
@@ -53,6 +53,7 @@ def load_image(path):
                              timeout=HTTP_TIMEOUT)
             r.raise_for_status()
             stream = StringIO(str(r.content))
+            print('////////////////////', stream)
             image = PIL.Image.open(stream)
         #except requests.exceptions.RequestException as e:
         #    raise errors.LoadImageError( e.message)
@@ -444,9 +445,9 @@ def vis_square(images,
         # they're grayscale - convert to a colormap
         redmap, greenmap, bluemap = get_color_map(colormap)
 
-        red = np.interp(images * (len(redmap) - 1) / 255.0, xrange(len(redmap)), redmap)
-        green = np.interp(images * (len(greenmap) - 1) / 255.0, xrange(len(greenmap)), greenmap)
-        blue = np.interp(images * (len(bluemap) - 1) / 255.0, xrange(len(bluemap)), bluemap)
+        red = np.interp(images * (len(redmap) - 1) / 255.0, range(len(redmap)), redmap)
+        green = np.interp(images * (len(greenmap) - 1) / 255.0, range(len(greenmap)), greenmap)
+        blue = np.interp(images * (len(bluemap) - 1) / 255.0, range(len(bluemap)), bluemap)
 
         # Slap the channels back together
         images = np.concatenate((red[..., np.newaxis], green[..., np.newaxis], blue[..., np.newaxis]), axis=3)
@@ -511,7 +512,7 @@ def get_color_map(name):
         bluemap = [1, 0.5]
     else:
         if name != 'jet':
-            print ('Warning: colormap "%s" not supported. Using jet instead.' % name)
+            print(('Warning: colormap "%s" not supported. Using jet instead.' % name))
         redmap = [0, 0, 0, 0, 0.5, 1, 1, 1, 0.5]
         greenmap = [0, 0, 0.5, 1, 1, 1, 0.5, 0, 0]
         bluemap = [0.5, 1, 1, 1, 0.5, 0, 0, 0, 0]

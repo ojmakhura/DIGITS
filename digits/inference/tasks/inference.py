@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2017, NVIDIA CORPORATION.  All rights reserved.
-from __future__ import absolute_import
+
 
 import base64
 from collections import OrderedDict
@@ -121,7 +121,7 @@ class InferenceTask(Task):
 
             # collect outputs
             o = []
-            for output_key, output_data in db['outputs'].items():
+            for output_key, output_data in list(db['outputs'].items()):
                 output_name = base64.urlsafe_b64decode(str(output_key))
                 o.append({'id': output_data.attrs['id'], 'name': output_name, 'data': output_data[...]})
             # sort outputs by ID
@@ -131,8 +131,8 @@ class InferenceTask(Task):
                 outputs[output['name']] = output['data']
 
             # collect layer data, if applicable
-            if 'layers' in db.keys():
-                for layer_id, layer in db['layers'].items():
+            if 'layers' in list(db.keys()):
+                for layer_id, layer in list(db['layers'].items()):
                     visualization = {
                         'id': int(layer_id),
                         'name': layer.attrs['name'],

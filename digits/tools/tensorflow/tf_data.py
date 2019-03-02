@@ -10,9 +10,9 @@ the correct functions for the respective backends.
 
 """
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+
+
+
 
 from PIL import Image
 import logging

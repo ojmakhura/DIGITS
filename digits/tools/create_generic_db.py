@@ -4,7 +4,7 @@
 import argparse
 # Find the best implementation available
 try:
-    from StringIO import StringIO
+    from io import StringIO
 except ImportError:
     from io import StringIO
 import lmdb
@@ -298,11 +298,11 @@ class DbCreator(object):
 
         if entry_count > 0:
             # create a queue to write errors to
-            error_queue = Queue.Queue()
+            error_queue = queue.Queue()
 
             # create and fill encoder queue
-            encoder_queue = Queue.Queue()
-            batch_indices = xrange(0, len(entry_ids), batch_size)
+            encoder_queue = queue.Queue()
+            batch_indices = range(0, len(entry_ids), batch_size)
             for batch in [entry_ids[start:start+batch_size] for start in batch_indices]:
                 # queue this batch
                 encoder_queue.put(batch)
@@ -319,7 +319,7 @@ class DbCreator(object):
 
             # create encoder threads
             encoders = []
-            for _ in xrange(num_threads):
+            for _ in range(num_threads):
                 encoder = Encoder(encoder_queue, writer, extension, error_queue, force_same_shape)
                 encoder.daemon = True
                 encoder.start()
@@ -478,5 +478,5 @@ if __name__ == '__main__':
             args['stage']
         )
     except Exception as e:
-        logger.error('%s: %s' % (type(e).__name__, e.message))
+        logger.error('%s: %s' % (type(e), e))
         raise

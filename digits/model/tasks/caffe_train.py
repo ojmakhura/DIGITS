@@ -1,5 +1,5 @@
 # Copyright (c) 2014-2017, NVIDIA CORPORATION.  All rights reserved.
-from __future__ import absolute_import
+
 
 from collections import OrderedDict
 import copy
@@ -26,6 +26,8 @@ from digits.utils.filesystem import tail
 # Must import after importing digit.config
 import caffe
 import caffe_pb2
+from functools import reduce
+import importlib
 
 # NOTE: Increment this every time the pickled object changes
 PICKLE_VERSION = 5
@@ -944,8 +946,7 @@ class CaffeTrainTask(TrainTask):
                 else:
                     raise ValueError('Unknown flavor.  Support NVIDIA and BVLC flavors only.')
         if self.pretrained_model:
-            args.append('--weights=%s' % ','.join(map(lambda x: self.path(x),
-                                                      self.pretrained_model.split(os.path.pathsep))))
+            args.append('--weights=%s' % ','.join([self.path(x) for x in self.pretrained_model.split(os.path.pathsep)]))
         return args
 
     def _pycaffe_args(self, gpu_id):
@@ -975,7 +976,7 @@ class CaffeTrainTask(TrainTask):
             gpu_script = "caffe.set_mode_cpu();"
         loading_script = ""
         if self.pretrained_model:
-            weight_files = map(lambda x: self.path(x), self.pretrained_model.split(os.path.pathsep))
+            weight_files = [self.path(x) for x in self.pretrained_model.split(os.path.pathsep)]
             for weight_file in weight_files:
                 loading_script = loading_script + "solv.net.copy_from('{weight}');".format(weight=weight_file)
         command_script =\
@@ -1295,7 +1296,7 @@ class CaffeTrainTask(TrainTask):
 
         # order outputs in prototxt order
         output = OrderedDict()
-        for blob in net.blobs.keys():
+        for blob in list(net.blobs.keys()):
             if blob in o:
                 output[blob] = o[blob]
 
@@ -1412,7 +1413,7 @@ class CaffeTrainTask(TrainTask):
         y, x = np.histogram(data, bins=20)
         y = list(y.astype(np.float32))
         ticks = x[[0, len(x) / 2, -1]]
-        x = [((x[i] + x[i + 1]) / 2.0).astype(np.float32) for i in xrange(len(x) - 1)]
+        x = [((x[i] + x[i + 1]) / 2.0).astype(np.float32) for i in range(len(x) - 1)]
         ticks = list(ticks.astype(np.float32))
         return (mean, std, [y, x, ticks])
 
@@ -1459,7 +1460,7 @@ class CaffeTrainTask(TrainTask):
             data_shape = (constants.DEFAULT_BATCH_SIZE,) + data_shape
 
         outputs = None
-        for chunk in [caffe_images[x:x + data_shape[0]] for x in xrange(0, len(caffe_images), data_shape[0])]:
+        for chunk in [caffe_images[x:x + data_shape[0]] for x in range(0, len(caffe_images), data_shape[0])]:
             new_shape = (len(chunk),) + data_shape[1:]
             if net.blobs['data'].data.shape != new_shape:
                 net.blobs['data'].reshape(*new_shape)
@@ -1470,16 +1471,16 @@ class CaffeTrainTask(TrainTask):
 
             # order output in prototxt order
             output = OrderedDict()
-            for blob in net.blobs.keys():
+            for blob in list(net.blobs.keys()):
                 if blob in o:
                     output[blob] = o[blob]
 
             if outputs is None:
                 outputs = copy.deepcopy(output)
             else:
-                for name, blob in output.iteritems():
+                for name, blob in list(output.items()):
                     outputs[name] = np.vstack((outputs[name], blob))
-            print ('Processed %s/%s images' % (len(outputs[outputs.keys()[0]]), len(caffe_images)))
+            print(('Processed %s/%s images' % (len(outputs[list(outputs.keys())[0]]), len(caffe_images))))
 
         return outputs
 
@@ -1515,7 +1516,7 @@ class CaffeTrainTask(TrainTask):
         loaded_module = sys.modules.get('digits_python_layers', None)
         if loaded_module:
             try:
-                reload(loaded_module)
+                importlib.reload(loaded_module)
             except ImportError:
                 # Let Caffe throw the error if the file is missing
                 pass

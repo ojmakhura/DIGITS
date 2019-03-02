@@ -196,13 +196,13 @@ class TestCalculatePercentages():
         mock_output.return_value = True
 
         permutes = itertools.combinations(['train', 'val', 'test'], 2)
-        expected_outputs = itertools.izip(permutes, itertools.repeat((32, 68)))
+        expected_outputs = zip(permutes, itertools.repeat((32, 68)))
 
         for supplied, expected in expected_outputs:
             args = {k: None for k in ['labels_file', 'train_file', 'percent_train',
                                       'val_file', 'percent_val', 'test_file', 'percent_test']}
             args.update({k + '_file': '' for k in supplied})
-            args.update({'percent_' + k: v for k, v in itertools.izip(supplied, expected)})
+            args.update({'percent_' + k: v for k, v in zip(supplied, expected)})
 
             # Tricky line. itertools returns combinations in sorted order, always.
             # The order of the returned non-zero values should always be correct.
@@ -337,7 +337,7 @@ class TestParseS3():
             test_utils.skipTest('Could not import parse_s3, most likely cause is Boto not installed')
 
     def test_all_train(self):
-        classes = range(10)
+        classes = list(range(10))
         mock_walker = MockS3Walker(classes)
         try:
             tmpdir = tempfile.mkdtemp()
@@ -356,7 +356,7 @@ class TestParseS3():
 
     def test_neg_all_train(self):
         try:
-            classes = range(1)
+            classes = list(range(1))
             mock_walker = MockS3Walker(classes)
             tmpdir = tempfile.mkdtemp()
             labels_file = tempfile.mkstemp(dir=tmpdir)

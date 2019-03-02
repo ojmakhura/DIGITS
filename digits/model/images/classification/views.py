@@ -1,5 +1,5 @@
 # Copyright (c) 2014-2017, NVIDIA CORPORATION.  All rights reserved.
-from __future__ import absolute_import
+
 
 import os
 import re
@@ -131,7 +131,7 @@ def create():
     add_learning_rate = len(form.learning_rate.data) > 1
 
     # Add swept batch_size
-    sweeps = [dict(s.items() + [('batch_size', bs)]) for bs in form.batch_size.data for s in sweeps[:]]
+    sweeps = [dict(list(s.items()) + [('batch_size', bs)]) for bs in form.batch_size.data for s in sweeps[:]]
     add_batch_size = len(form.batch_size.data) > 1
     n_jobs = len(sweeps)
 
@@ -433,7 +433,7 @@ def classify_one():
     if inputs is not None and len(inputs['data']) == 1:
         image = utils.image.embed_image_html(inputs['data'][0])
         # convert to class probabilities for viewing
-        last_output_name, last_output_data = outputs.items()[-1]
+        last_output_name, last_output_data = list(outputs.items())[-1]
 
         if len(last_output_data) == 1:
             scores = last_output_data[0].flatten()
@@ -539,7 +539,7 @@ def classify_many():
 
     if outputs is not None:
         # convert to class probabilities for viewing
-        last_output_name, last_output_data = outputs.items()[-1]
+        last_output_name, last_output_data = list(outputs.items())[-1]
         if len(last_output_data) < 1:
             raise werkzeug.exceptions.BadRequest(
                 'Unable to classify any image from the file')
@@ -586,7 +586,7 @@ def classify_many():
             top1_accuracy = round(100.0 * n_top1_accurate / n_ground_truth, 2)
             top5_accuracy = round(100.0 * n_top5_accurate / n_ground_truth, 2)
             per_class_accuracy = []
-            for x in xrange(n_labels):
+            for x in range(n_labels):
                 n_examples = sum(confusion_matrix[x])
                 per_class_accuracy.append(
                     round(100.0 * confusion_matrix[x, x] / n_examples, 2) if n_examples > 0 else None)
@@ -599,7 +599,7 @@ def classify_many():
         ground_truths = [labels[x] if x is not None and (0 <= x < n_labels) else None for x in ground_truths]
 
     if request_wants_json():
-        joined = dict(zip(paths, classifications))
+        joined = dict(list(zip(paths, classifications)))
         return flask.jsonify({'classifications': joined}), status_code
     else:
         return flask.render_template('models/images/classification/classify_many.html',
@@ -675,7 +675,7 @@ def top_n():
     results = None
     if outputs is not None and len(outputs) > 0:
         # convert to class probabilities for viewing
-        last_output_name, last_output_data = outputs.items()[-1]
+        last_output_name, last_output_data = list(outputs.items())[-1]
         scores = last_output_data
 
         if scores is None:
@@ -689,9 +689,9 @@ def top_n():
         images_per_category = min(top_n, len(images))
         # Can't have more categories than the number of labels or the number of outputs
         n_categories = min(indices.shape[1], len(labels))
-        for i in xrange(n_categories):
+        for i in range(n_categories):
             result_images = []
-            for j in xrange(images_per_category):
+            for j in range(images_per_category):
                 result_images.append(images[indices[j][i]])
             results.append((
                 labels[i],
@@ -710,7 +710,7 @@ def top_n():
 
 def get_datasets():
     return [(j.id(), j.name()) for j in sorted(
-        [j for j in scheduler.jobs.values() if isinstance(j, ImageClassificationDatasetJob) and
+        [j for j in list(scheduler.jobs.values()) if isinstance(j, ImageClassificationDatasetJob) and
          (j.status.is_running() or j.status == Status.DONE)],
         cmp=lambda x, y: cmp(y.id(), x.id())
     )
@@ -731,7 +731,7 @@ def get_default_standard_network():
 
 def get_previous_networks():
     return [(j.id(), j.name()) for j in sorted(
-        [j for j in scheduler.jobs.values() if isinstance(j, ImageClassificationModelJob)],
+        [j for j in list(scheduler.jobs.values()) if isinstance(j, ImageClassificationModelJob)],
         cmp=lambda x, y: cmp(y.id(), x.id())
     )
     ]
@@ -739,7 +739,7 @@ def get_previous_networks():
 
 def get_previous_networks_fulldetails():
     return [(j) for j in sorted(
-        [j for j in scheduler.jobs.values() if isinstance(j, ImageClassificationModelJob)],
+        [j for j in list(scheduler.jobs.values()) if isinstance(j, ImageClassificationModelJob)],
         cmp=lambda x, y: cmp(y.id(), x.id())
     )
     ]
@@ -759,7 +759,7 @@ def get_previous_network_snapshots():
 
 def get_pretrained_networks():
     return [(j.id(), j.name()) for j in sorted(
-        [j for j in scheduler.jobs.values() if isinstance(j, PretrainedModelJob)],
+        [j for j in list(scheduler.jobs.values()) if isinstance(j, PretrainedModelJob)],
         cmp=lambda x, y: cmp(y.id(), x.id())
     )
     ]
@@ -767,7 +767,7 @@ def get_pretrained_networks():
 
 def get_pretrained_networks_fulldetails():
     return [(j) for j in sorted(
-        [j for j in scheduler.jobs.values() if isinstance(j, PretrainedModelJob)],
+        [j for j in list(scheduler.jobs.values()) if isinstance(j, PretrainedModelJob)],
         cmp=lambda x, y: cmp(y.id(), x.id())
     )
     ]

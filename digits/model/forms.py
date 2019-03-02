@@ -74,19 +74,19 @@ class ModelForm(Form):
     )
 
     python_layer_from_client = utils.forms.BooleanField(
-        u'Use client-side file',
+        'Use client-side file',
         default=False,
     )
 
     python_layer_client_file = utils.forms.FileField(
-        u'Client-side file',
+        'Client-side file',
         validators=[
             validate_py_ext
         ],
         tooltip="Choose a Python file on the client containing layer definitions."
     )
     python_layer_server_file = utils.forms.StringField(
-        u'Server-side file',
+        'Server-side file',
         validators=[
             validate_file_exists,
             validate_py_ext
@@ -248,7 +248,7 @@ class ModelForm(Form):
     # Use a SelectField instead of a HiddenField so that the default value
     # is used when nothing is provided (through the REST API)
     method = wtforms.SelectField(
-        u'Network type',
+        'Network type',
         choices=[
             ('standard', 'Standard network'),
             ('previous', 'Previous network'),

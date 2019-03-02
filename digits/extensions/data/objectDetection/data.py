@@ -1,12 +1,12 @@
 # Copyright (c) 2016-2017, NVIDIA CORPORATION.  All rights reserved.
-from __future__ import absolute_import
+
 
 import csv
 import operator
 import os
 import random
 try:
-    from StringIO import StringIO
+    from io import StringIO
 except ImportError:
     from io import StringIO
 
@@ -38,7 +38,7 @@ class DataIngestion(DataIngestionInterface):
             s = StringIO.StringIO(self.custom_classes)
             reader = csv.reader(s)
             self.class_mappings = {}
-            for idx, name in enumerate(reader.next()):
+            for idx, name in enumerate(next(reader)):
                 self.class_mappings[name.strip().lower()] = idx
         else:
             self.class_mappings = None
@@ -216,7 +216,7 @@ class DataIngestion(DataIngestionInterface):
             scene_files.append(key)
 
         # determine largest label height:
-        self.max_bboxes = max([len(annotation) for annotation in self.datasrc_annotation_dict.values()])
+        self.max_bboxes = max([len(annotation) for annotation in list(self.datasrc_annotation_dict.values())])
 
     def make_image_list(self, folder):
         """

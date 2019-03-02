@@ -1,5 +1,5 @@
 # Copyright (c) 2016, NVIDIA CORPORATION.  All rights reserved.
-from __future__ import absolute_import
+
 
 import os
 
@@ -39,7 +39,7 @@ class ConfigForm(Form):
         )
 
     attributes_file = utils.forms.StringField(
-        u'Attributes vector file',
+        'Attributes vector file',
         validators=[
             validate_file_path,
             ],

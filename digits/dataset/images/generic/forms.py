@@ -1,5 +1,5 @@
 # Copyright (c) 2015-2017, NVIDIA CORPORATION.  All rights reserved.
-from __future__ import absolute_import
+
 
 import os.path
 
@@ -19,7 +19,7 @@ class GenericImageDatasetForm(ImageDatasetForm):
     # Use a SelectField instead of a HiddenField so that the default value
     # is used when nothing is provided (through the REST API)
     method = wtforms.SelectField(
-        u'Dataset type',
+        'Dataset type',
         choices=[
             ('prebuilt', 'Prebuilt'),
         ],

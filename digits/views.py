@@ -1,5 +1,5 @@
 # Copyright (c) 2014-2017, NVIDIA CORPORATION.  All rights reserved.
-from __future__ import absolute_import
+
 
 import glob
 import json
@@ -161,7 +161,7 @@ def json_dict(job, model_output_fields):
 
         for prefix, outputs in (('train', job.train_task().train_outputs),
                                 ('val', job.train_task().val_outputs)):
-            for key in outputs.keys():
+            for key in list(outputs.keys()):
                 data = outputs[key].data
                 if len(data) > 0:
                     key = '%s (%s) ' % (key, prefix)
@@ -260,7 +260,7 @@ def job_table_data(job_id):
 
 def get_job_list(cls, running):
     return sorted(
-        [j for j in scheduler.jobs.values() if isinstance(j, cls) and j.status.is_running() == running],
+        [j for j in list(scheduler.jobs.values()) if isinstance(j, cls) and j.status.is_running() == running],
         key=lambda j: j.status_history[0][1],
         reverse=True,
     )

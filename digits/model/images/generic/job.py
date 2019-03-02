@@ -1,5 +1,5 @@
 # Copyright (c) 2015-2017, NVIDIA CORPORATION.  All rights reserved.
-from __future__ import absolute_import
+
 
 import os.path
 
@@ -33,7 +33,7 @@ class GenericImageModelJob(ImageModelJob):
         # get model files
         model_files = task.get_model_files()
         download_files = [(self.path(filename), os.path.basename(filename))
-                          for filename in model_files.values()]
+                          for filename in list(model_files.values())]
 
         if task.dataset.get_mean_file():
             download_files.append((

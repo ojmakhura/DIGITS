@@ -1,6 +1,6 @@
 
 # Copyright (c) 2016, NVIDIA CORPORATION.  All rights reserved.
-from __future__ import absolute_import
+
 
 import copy
 import os
@@ -71,7 +71,7 @@ def get_stats(dataset):
     """
     return dataset statistics
     """
-    fields = [field for sample in dataset for field in sample.values()]
+    fields = [field for sample in dataset for field in list(sample.values())]
     sentences = [sentence for field in fields for sentence in field]
     words = sorted(set([word for sentence in sentences for word in sentence]))
 
@@ -104,7 +104,7 @@ def parse_lines(lines):
     value is a list of words without punctuation.
     """
     data = []
-    print "lines are %s" % lines
+    print("lines are %s" % lines)
     story = None
     for line in lines:
         # convert to lower case

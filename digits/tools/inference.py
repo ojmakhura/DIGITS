@@ -10,7 +10,7 @@ import PIL.Image
 import os
 import sys
 try:
-    from StringIO import StringIO
+    from io import StringIO
 except ImportError:
     from io import StringIO
 
@@ -142,7 +142,7 @@ def infer(input_list,
                 input_data.append(image)
                 n_input_samples = n_input_samples + 1
             except utils.errors.LoadImageError as e:
-                print e
+                print(e)
 
     # perform inference
     visualizations = None

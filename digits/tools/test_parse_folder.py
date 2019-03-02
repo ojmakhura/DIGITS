@@ -179,7 +179,7 @@ class TestCalculatePercentages():
         mock_output.return_value = True
 
         permutes = itertools.combinations(['train', 'val', 'test'], 2)
-        expected_outputs = zip(permutes, itertools.repeat((32, 68)))
+        expected_outputs = list(zip(permutes, itertools.repeat((32, 68))))
 
         for supplied, expected in expected_outputs:
             args = {k: None for k in ['labels_file', 'train_file', 'percent_train',

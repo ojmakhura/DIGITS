@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2017, NVIDIA CORPORATION.  All rights reserved.
-from __future__ import absolute_import
+
 
 import os
 
@@ -40,7 +40,7 @@ class DatasetForm(Form):
                 return True
 
     feature_folder = utils.forms.StringField(
-        u'Feature image folder',
+        'Feature image folder',
         validators=[
             validators.DataRequired(),
             validate_folder_path,
@@ -49,7 +49,7 @@ class DatasetForm(Form):
     )
 
     label_folder = utils.forms.StringField(
-        u'Label image folder',
+        'Label image folder',
         validators=[
             validators.DataRequired(),
             validate_folder_path,
@@ -64,7 +64,7 @@ class DatasetForm(Form):
     )
 
     folder_pct_val = utils.forms.IntegerField(
-        u'% for validation',
+        '% for validation',
         default=10,
         validators=[
             validators.NumberRange(min=0, max=100)
@@ -78,7 +78,7 @@ class DatasetForm(Form):
                                               )
 
     validation_feature_folder = utils.forms.StringField(
-        u'Validation feature image folder',
+        'Validation feature image folder',
         validators=[
             validate_required_iff(has_val_folder=True),
             validate_folder_path,
@@ -87,7 +87,7 @@ class DatasetForm(Form):
     )
 
     validation_label_folder = utils.forms.StringField(
-        u'Validation label image folder',
+        'Validation label image folder',
         validators=[
             validate_required_iff(has_val_folder=True),
             validate_folder_path,
@@ -114,7 +114,7 @@ class DatasetForm(Form):
     )
 
     class_labels_file = utils.forms.StringField(
-        u'Class labels (optional)',
+        'Class labels (optional)',
         validators=[
             validate_file_path,
         ],

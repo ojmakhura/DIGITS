@@ -1,5 +1,5 @@
 # Copyright (c) 2014-2017, NVIDIA CORPORATION.  All rights reserved.
-from __future__ import absolute_import
+
 
 from collections import OrderedDict
 import os
@@ -221,7 +221,7 @@ class Scheduler:
         else:
             raise ValueError("Unhandled job type %s" % job.job_type())
 
-        for j in self.jobs.values():
+        for j in list(self.jobs.values()):
             # Any model that shares (this/the same) dataset should be added too:
             if isinstance(j, ModelJob):
                 if datajob == j.train_task().dataset and j.id() != job.id():
@@ -247,7 +247,7 @@ class Scheduler:
         Deletes an entire job folder from disk
         Returns True if the Job was found and deleted
         """
-        if isinstance(job, str) or isinstance(job, unicode):
+        if isinstance(job, str) or isinstance(job, str):
             job_id = str(job)
         elif isinstance(job, Job):
             job_id = job.id()
@@ -259,7 +259,7 @@ class Scheduler:
         if job:
             if isinstance(job, DatasetJob):
                 # check for dependencies
-                for j in self.jobs.values():
+                for j in list(self.jobs.values()):
                     if isinstance(j, ModelJob) and j.dataset_id == job.id():
                         logger.error('Cannot delete "%s" (%s) because "%s" (%s) depends on it.' %
                                      (job.name(), job.id(), j.name(), j.id()))
@@ -300,28 +300,28 @@ class Scheduler:
     def running_dataset_jobs(self):
         """a query utility"""
         return sorted(
-            [j for j in self.jobs.values() if isinstance(j, DatasetJob) and j.status.is_running()],
+            [j for j in list(self.jobs.values()) if isinstance(j, DatasetJob) and j.status.is_running()],
             cmp=lambda x, y: cmp(y.id(), x.id())
         )
 
     def completed_dataset_jobs(self):
         """a query utility"""
         return sorted(
-            [j for j in self.jobs.values() if isinstance(j, DatasetJob) and not j.status.is_running()],
+            [j for j in list(self.jobs.values()) if isinstance(j, DatasetJob) and not j.status.is_running()],
             cmp=lambda x, y: cmp(y.id(), x.id())
         )
 
     def running_model_jobs(self):
         """a query utility"""
         return sorted(
-            [j for j in self.jobs.values() if isinstance(j, ModelJob) and j.status.is_running()],
+            [j for j in list(self.jobs.values()) if isinstance(j, ModelJob) and j.status.is_running()],
             cmp=lambda x, y: cmp(y.id(), x.id())
         )
 
     def completed_model_jobs(self):
         """a query utility"""
         return sorted(
-            [j for j in self.jobs.values() if isinstance(j, ModelJob) and not j.status.is_running()],
+            [j for j in list(self.jobs.values()) if isinstance(j, ModelJob) and not j.status.is_running()],
             cmp=lambda x, y: cmp(y.id(), x.id())
         )
 
@@ -362,7 +362,7 @@ class Scheduler:
             last_saved = None
             while not self.shutdown.is_set():
                 # Iterate backwards so we can delete jobs
-                for job in self.jobs.values():
+                for job in list(self.jobs.values()):
                     if job.status == Status.INIT:
                         def start_this_job(job):
                             if isinstance(job, ModelJob):
@@ -423,7 +423,7 @@ class Scheduler:
 
                 # save running jobs every 15 seconds
                 if not last_saved or time.time() - last_saved > 15:
-                    for job in self.jobs.values():
+                    for job in list(self.jobs.values()):
                         if job.status.is_running():
                             if job.is_persistent():
                                 job.save()
@@ -441,7 +441,7 @@ class Scheduler:
             pass
 
         # Shutdown
-        for job in self.jobs.values():
+        for job in list(self.jobs.values()):
             job.abort()
             job.save()
         self.running = False
@@ -467,7 +467,7 @@ class Scheduler:
         """
         try:
             # reserve resources
-            for resource_type, requests in resources.iteritems():
+            for resource_type, requests in list(resources.items()):
                 for identifier, value in requests:
                     found = False
                     for resource in self.resources[resource_type]:
@@ -491,7 +491,7 @@ class Scheduler:
         Release resources previously reserved for a task
         """
         # release resources
-        for resource_type, requests in resources.iteritems():
+        for resource_type, requests in list(resources.items()):
             for identifier, value in requests:
                 for resource in self.resources[resource_type]:
                     if resource.identifier == identifier:

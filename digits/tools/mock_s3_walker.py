@@ -1,9 +1,9 @@
-from s3_walker import S3Walker
+from .s3_walker import S3Walker
 
 
 class MockS3Walker(S3Walker):
 
-    def __init__(self, classes=range(10)):  # endpoint, accesskey, secretkey):
+    def __init__(self, classes=list(range(10))):  # endpoint, accesskey, secretkey):
         self.s3_dict = {}
         self.s3_dict['emptybucket'] = []
 

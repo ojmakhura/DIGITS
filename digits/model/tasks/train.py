@@ -1,5 +1,5 @@
 # Copyright (c) 2014-2017, NVIDIA CORPORATION.  All rights reserved.
-from __future__ import absolute_import
+
 
 from collections import OrderedDict, namedtuple
 import os.path
@@ -365,7 +365,7 @@ class TrainTask(Task):
             d[name].data.append(value)
         else:
             # we might have missed one
-            for _ in xrange(epoch_len - name_len - 1):
+            for _ in range(epoch_len - name_len - 1):
                 d[name].data.append(None)
             d[name].data.append(value)
 
@@ -570,7 +570,7 @@ class TrainTask(Task):
             else:
                 # return all data
                 stride = 1
-            for name, output in self.train_outputs.iteritems():
+            for name, output in list(self.train_outputs.items()):
                 if name not in ['epoch', 'learning_rate']:
                     col_id = '%s-train' % name
                     data['xs'][col_id] = 'train_epochs'
@@ -595,7 +595,7 @@ class TrainTask(Task):
             else:
                 # return all data
                 stride = 1
-            for name, output in self.val_outputs.iteritems():
+            for name, output in list(self.val_outputs.items()):
                 if name not in ['epoch']:
                     col_id = '%s-val' % name
                     data['xs'][col_id] = 'val_epochs'

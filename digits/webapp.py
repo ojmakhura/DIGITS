@@ -1,5 +1,5 @@
 # Copyright (c) 2014-2017, NVIDIA CORPORATION.  All rights reserved.
-from __future__ import absolute_import
+
 
 import os
 
@@ -94,7 +94,7 @@ def username_decorator(f):
         return f(*args, **kwargs)
     return decorated
 
-for endpoint, function in app.view_functions.items():
+for endpoint, function in list(app.view_functions.items()):
     app.view_functions[endpoint] = username_decorator(function)
 
 # Setup the environment

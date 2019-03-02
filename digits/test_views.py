@@ -1,9 +1,9 @@
 # Copyright (c) 2014-2017, NVIDIA CORPORATION.  All rights reserved.
-from __future__ import absolute_import
+
 
 import json
 import time
-import urllib
+import urllib.request, urllib.parse, urllib.error
 
 from urllib.parse import urlparse
 
@@ -141,7 +141,7 @@ class BaseViewsTest(object):
                 rv = cls.app.get(url, follow_redirects=True)
                 assert rv.status_code == 200, 'Cannot get info from job %s. "%s" returned %s' % (
                     job_id, url, rv.status_code)
-                assert job_id in rv.data
+                assert job_id in str(rv.data)
                 return status
             time.sleep(polling_period)
 
@@ -183,7 +183,7 @@ class TestViews(BaseViewsTest):
         rv = self.app.get('/')
         assert rv.status_code == 200, 'page load failed with %s' % rv.status_code
         for text in ['Home', 'Datasets', 'Models']:
-            assert text in rv.data, 'unexpected page format'
+            assert text in str(rv.data), 'unexpected page format'
 
     def test_invalid_page(self):
         rv = self.app.get('/foo')
@@ -195,7 +195,7 @@ class TestViews(BaseViewsTest):
 
     def check_autocomplete(self, absolute_path):
         path = '/' if absolute_path else './'
-        url = '/autocomplete/path?query=%s' % (urllib.quote(path, safe=''))
+        url = '/autocomplete/path?query=%s' % (urllib.parse.quote(path, safe=''))
         rv = self.app.get(url)
         assert rv.status_code == 200
         status = json.loads(rv.data)

@@ -9,9 +9,9 @@ import PIL.Image
 import os
 import sys
 try:
-    from cStringIO import StringIO
+    from io import StringIO
 except ImportError:
-    from StringIO import StringIO
+    from io import StringIO
 
 # Add path for DIGITS package
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
@@ -181,13 +181,13 @@ def infer(jobs_dir,
         n_input_samples = n_input_samples + 1
         if n_input_samples % batch_size == 0:
             aggregate(input_data, input_labels, attributes, embeddings)
-            print("######## %d processed ########" % n_input_samples)
+            print(("######## %d processed ########" % n_input_samples))
             input_data = []      # sample data
             input_labels = []    # sample labels
 
     if n_input_samples % batch_size != 0:
         aggregate(input_data, input_labels, attributes, embeddings)
-        print("######## %d processed ########" % n_input_samples)
+        print(("######## %d processed ########" % n_input_samples))
 
 if __name__ == '__main__':
 

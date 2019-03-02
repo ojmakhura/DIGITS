@@ -1,5 +1,5 @@
 # Copyright (c) 2016-2017, NVIDIA CORPORATION.  All rights reserved.
-from __future__ import absolute_import
+
 
 import os
 
@@ -28,7 +28,7 @@ class DatasetForm(Form):
     """
 
     train_data_file = utils.forms.StringField(
-        u'Training data (.csv)',
+        'Training data (.csv)',
         validators=[
             validators.DataRequired(),
             validate_file_path,
@@ -41,7 +41,7 @@ class DatasetForm(Form):
     )
 
     val_data_file = utils.forms.StringField(
-        u'Validation data (.csv)',
+        'Validation data (.csv)',
         validators=[
             validate_file_path,
         ],
@@ -53,7 +53,7 @@ class DatasetForm(Form):
     )
 
     alphabet = utils.forms.StringField(
-        u'Dictionary',
+        'Dictionary',
         default="abcdefghijklmnopqrstuvwxyz0123456789-,;.!?:'\"/\\|_@#$%^&*~`+ =<>()[]{}",
         tooltip="Alphabet to use when converting characters to IDs "
                 "(1-based indexing). Unknown characters will be all be "
@@ -61,7 +61,7 @@ class DatasetForm(Form):
     )
 
     class_labels_file = utils.forms.StringField(
-        u'Class labels',
+        'Class labels',
         validators=[
             validate_file_path,
         ],
@@ -72,7 +72,7 @@ class DatasetForm(Form):
     )
 
     max_chars_per_sample = utils.forms.IntegerField(
-        u'Number of characters per sample',
+        'Number of characters per sample',
         default=1024,
         validators=[
             validators.Optional(),
@@ -92,12 +92,12 @@ class InferenceForm(Form):
     """
 
     snippet = utils.forms.TextAreaField(
-        u'Snippet',
+        'Snippet',
         tooltip="Test a single snippet"
     )
 
     test_data_file = utils.forms.StringField(
-        u'Test data (.csv)',
+        'Test data (.csv)',
         validators=[
             validate_file_path,
         ],

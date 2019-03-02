@@ -16,7 +16,7 @@ import time
 
 # Find the best implementation available
 try:
-    from StringIO import StringIO
+    from io import StringIO
 except ImportError:
     from io import StringIO
 
@@ -35,7 +35,7 @@ import caffe.io  # noqa
 import caffe_pb2  # noqa
 
 if digits.config.config_value('tensorflow')['enabled']:
-    import tensorflow as tf
+    from . import tensorflow as tf
 else:
     tf = None
 
@@ -151,7 +151,7 @@ class Hdf5Writer(DbWriter):
             return
 
         # calculate how many will fit in current dataset
-        split = self._max_count - current_count
+        split = int(round(self._max_count - current_count))
 
         if split > 0:
             # put what we can into the current dataset
@@ -282,7 +282,7 @@ def create_db(input_file, output_dir,
     write_queue = queue.Queue(2 * batch_size)
     summary_queue = queue.Queue()
 
-    for _ in xrange(num_threads):
+    for _ in range(num_threads):
         p = threading.Thread(target=_load_thread,
                              args=(load_queue, write_queue, summary_queue,
                                    image_width, image_height, image_channels,
@@ -355,7 +355,7 @@ def _create_tfrecords(image_count, write_queue, batch_size, output_dir,
 
     writers = []
     with open(os.path.join(output_dir, LIST_FILENAME), 'w') as outfile:
-        for shard_id in xrange(num_shards):
+        for shard_id in range(num_shards):
             shard_name = 'SHARD_%03d.tfrecords' % (shard_id)
             filename = os.path.join(output_dir, shard_name)
             writers.append(tf.python_io.TFRecordWriter(filename))
@@ -797,9 +797,9 @@ def _array_to_datum(image, label, encoding):
 
         s = StringIO()
         if encoding == 'png':
-            PIL.Image.fromarray(image).save(s, format='PNG')
+            PIL.Image.fromarray(image).save(s.getvalue(), format='PNG')
         elif encoding == 'jpg':
-            PIL.Image.fromarray(image).save(s, format='JPEG', quality=90)
+            PIL.Image.fromarray(image).save(s.getvalue(), format='JPEG', quality=90)
         else:
             raise ValueError('Invalid encoding type')
         datum.data = s.getvalue()
@@ -815,7 +815,7 @@ def _write_batch_lmdb(db, batch, image_count):
         with db.begin(write=True) as lmdb_txn:
             for i, datum in enumerate(batch):
                 key = '%08d_%d' % (image_count + i, datum.label)
-                lmdb_txn.put(key, datum.SerializeToString())
+                lmdb_txn.put(key.encode('ascii'), datum.SerializeToString())
 
     except lmdb.MapFullError:
         # double the map_size

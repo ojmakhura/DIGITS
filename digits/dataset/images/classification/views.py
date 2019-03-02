@@ -1,12 +1,12 @@
 # Copyright (c) 2014-2017, NVIDIA CORPORATION.  All rights reserved.
-from __future__ import absolute_import
+
 
 import os
 import shutil
 
 # Find the best implementation available
 try:
-    from StringIO import StringIO
+    from io import StringIO
 except ImportError:
 	from io import StringIO
 
@@ -499,7 +499,7 @@ def explore():
             total_entries = label_entries
 
     max_page = min((total_entries - 1) / size, page + 5)
-    pages = range(min_page, max_page + 1)
+    pages = list(range(min_page, max_page + 1))
     for key, value in reader.entries():
         if count >= page * size:
             datum = caffe_pb2.Datum()
